@@ -6,7 +6,17 @@
 import scrapy
 
 
-class YelpItem(scrapy.Item):
+class StoreItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    
+    url = scrapy.Field()
+    name = scrapy.Field()
+    rating = scrapy.Field()
+    # title_text = scrapy.Field() # 
+    location = scrapy.Field()
+    price = scrapy.Field()
+    food_type = scrapy.Field()
+    review = scrapy.Field()
+       
+    

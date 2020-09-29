@@ -12,12 +12,6 @@ BOT_NAME = 'yelp'
 SPIDER_MODULES = ['yelp.spiders']
 NEWSPIDER_MODULE = 'yelp.spiders'
 
-EXTENSIONS = {
-    "scrapy.extensions.closespider.CloseSpider":500
-}
-
-FEED_URI = 'task.jl'
-FEED_FORMAT = 'jl'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'yelp (+http://www.yourdomain.com)'
