@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>LA TRAVEL</title>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+        <script src="http://semantic-ui.com/javascript/library/tablesort.js"></script>
+        
+    </head>
+
+    <body>
+        <div class="ui container">
+        <p></p>
+        <h1>Welcome To LA</h1>
+        <a class="ui left labeled icon button" href="{{ request.url_for('search_page')}}">
+            <i class="left arrow icon"></i>
+            Back
+        </a>
+        {% block content %}
+        {% endblock %}
+        </div>
+    </body>
+</html>

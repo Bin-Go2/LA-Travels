@@ -1,0 +1,101 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<script>
+$(document).ready(function() {
+  $("#add_symbol").click(function() {
+    $('.ui.modal').modal('show');
+  });
+
+  $("#save").click(function() {
+    var textareaContent = $("#symbols").val();
+    var symbols = textareaContent.split("\n");
+    $.ajax({
+        url: 'result',
+        type: 'POST',
+        contentType: 'application/json',
+        // data: JSON.stringify({ "symbol": symbols[i] }),
+        data:{'sybmol':symbols},
+        dataType: 'json'
+      });
+
+    $('.ui.modal').modal('hide');
+  });
+});
+</script>
+
+<button id="add_symbol" class="ui button secondary">Add Some constriants</button>
+
+<table class="ui stripped sortable selectable celled table" id='res'>
+  <thead>
+    <tr class="center aligned">
+      <th>URI</th>
+      <th>Name</th>
+      <th>Rating</th>
+      <th>Price</th>
+      <th>Popular Food</th>
+      <th>Location</th>
+      <th>related tokens</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in data %}
+    <tr class="center aligned">
+      <!-- <td class='selectable'>{{ item.url }}</td> -->
+      <td class="selectable positive"  style="cursor:pointer;text-decoration:underline" > {{ item.url }}</td>
+      <td class="selectable positive"  style="cursor:pointer;text-decoration:underline" > {{ item.name }}</td>
+      <td>{{ item.rating }}</td>
+      <td>{{ item.price }}</td>
+      <td class="selectable positive"  style="cursor:pointer;text-decoration:underline" > {{ item.food }}</td>
+      <td>{{ item.location }}</td>
+      <td> <img src="{{ url_for('static', path='/images/rest1.png') }}"> {{ item.related_tokens }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="ui modal">
+    <i class="close icon"></i>
+    <div class="header">
+      Add Constriants
+    </div>
+    <div class="content">
+        <div class="ui form">
+            <div class="field">
+              <label>details</label>
+              <textarea id="symbols"></textarea>
+            </div>
+          </div>
+    </div>
+    <div class="actions">
+      <div id="save" class="ui positive right labeled icon button">
+        Add details
+        <i class="plus icon"></i>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+
+  $('table').tablesort()
+
+  // get the cell content  
+  const tbody = document.querySelector('#res tbody');
+  tbody.addEventListener('click', function (e) {
+  const cell = e.target.closest('td');
+  if (!cell) {return;} // Quit, not clicked on a cell
+  const row = cell.parentElement;
+  console.log(cell.innerHTML, row.rowIndex, cell.cellIndex);
+
+  if (cell.cellIndex == 0) {
+    window.location.href= cell.innerHTML // go to url
+  }
+});
+
+</script> 
+
+
+
+{% endblock %}

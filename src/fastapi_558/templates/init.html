@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .clearfix::after {
+            content: ' ';
+            display: table;
+            clear: both;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: 'PingFang SC', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100%;
+            width: 100%;
+
+        }
+
+        footer {
+            position: fixed;
+            bottom: 300px;
+            left: 0;
+            width: 100%;
+        }
+
+        .container-siri {
+            color: #fff;
+            background: #050305;
+            height: 100%;
+            padding-top: 30px;
+        }
+
+        #siri-wave {
+            margin: 0 auto;
+            height: 80px;
+            width: 90%;
+        }
+
+        .siri-response {
+            color: #fff;
+            font-size: 42px;
+            padding: 0 30px;
+            line-height: 1.2;
+        }
+
+        .siri-response p {
+            position: absolute;
+            bottom: 0;
+            left: 30px;
+            opacity: 0;
+        }
+
+        .siri-result {
+            opacity: 0;
+            padding: 0 20px;
+        }
+
+        .user-question {
+            opacity: 0.6;
+            font-size: 28px;
+            margin-bottom: 20px;
+            margin-left: 15px;
+        }
+
+        .siri-answer {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            font-size: 18px;
+            color: #000;
+            padding: 15px;
+        }
+
+        .card .card-heading {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-heading img {
+            border-radius: 4px;
+            margin-right: 5px;
+            width: 20px;
+        }
+
+        .card-body {
+            display: flex;
+        }
+
+        .card-body .card-avatar {
+            width: 40%;
+        }
+
+        .card-body .card-avatar img {
+            display: block;
+            width: 100%;
+        }
+
+        .card .card-body .card-content {
+            padding: 10px;
+        }
+
+        #siri-ball {
+            opacity: 0.8;
+            width: 350px;
+            display: none;
+            margin: 0 auto;
+            opacity: 0;
+        }
+
+        .chat {
+            opacity: 0;
+        }
+
+        .media-left,
+        .media-right,
+        .media-body {
+            display: table-cell;
+            vertical-align: top;
+        }
+
+        .media-heading {
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+
+        .media-left img,
+        .media-right img {
+            width: 3em;
+            height: 3em;
+        }
+
+        .media-body {
+            padding-left: 1em;
+            font-size: 0.8em;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display:none">
+    <form action="/main_page/" enctype="application/x-www-form-urlencoded" method="post" id='submit-form'>  
+        <input name="speech_info" type="text" id='speech_info'>
+        <input type="submit">
+    </form>
+    </div>
+
+
+    <div class="sr-only">
+    </div>
+    <section id="siri" class="container-siri">
+        <main class="container">
+            <section class="siri-response">
+                <p>Hey foodie,</br> what can I do for you?</p>
+                <p>Go ahead </br>I am listening.</p>
+            </section>
+        </main>
+        <footer>
+            <div id="siri-wave" class="siri-animation"></div>
+            <div id="siri-ball">
+                <img src="{{ url_for('static', path='/images/siri-ball.gif') }}" alt="Siri Ball" style="width: 100%;">
+                <p id='instruction' style="font-size: larger;font-weight: bolder;">Click icon and begin speaking.</p>
+                <br>
+
+                <p id="final_span" class="final" style="font-size: larger;"></p>
+            </div>
+            
+                     
+
+        </footer>
+
+
+    </section>
+    </section>
+    <script src="{{ url_for('static', path='/js/siriwave.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/anime.min.js') }}"></script>
+    <script>
+        window.onload = function () {
+            var SIRICOMPLETED = false;
+            var double_click = false;  // click the siri twice
+            var recognition = new webkitSpeechRecognition();
+                recognition.lang ='en-US';
+                recognition.continuous = true; // continuous listening
+            var final_transcript = '';
+            // First page
+            (function () {
+                var siriwave = new SiriWave({
+                    amplitude: 1,
+                    container: document.getElementById('siri-wave'),
+                    autostart: true,
+                    style: 'ios9',
+                    speed: 0.05,
+                    cover: true
+                });
+
+                var basicTimeline = anime.timeline({
+                    targets: '.siri-response p',
+                    duration: 2000,
+                    easing: 'easeOutExpo',
+                    delay: function (el, i) {
+                        return i * 3e3
+                    }
+                })
+
+                basicTimeline
+                    .add({
+                        opacity: [
+                            { value: 1, duration: 2e3 },
+                            { value: 0, duration: 2e3 }
+                        ],
+                        top: 50,
+                    })
+
+                basicTimeline.complete = function () {
+                    document.getElementById('siri-wave').remove()
+                    document.getElementById('siri-ball').style.display = 'block'
+                    document.querySelector('.siri-response').remove()
+
+                    var siriTimeline = anime.timeline({
+                        easing: 'easeOutExpo'
+                    })
+
+                    siriTimeline
+                        .add({
+                            targets: '#siri-ball',
+                            opacity: 1
+                        })
+                        .add({
+                            targets: '.siri-result',
+                            opacity: 1
+                        })
+                    SIRICOMPLETED = true
+                }
+            })()
+
+            document.getElementById('siri').addEventListener('click', function () {
+                if (double_click) {
+                    recognition.stop();
+                    // alert(final_transcript);
+
+                    document.getElementById("speech_info").value = final_transcript ;
+                    document.getElementById("submit-form").submit();
+
+                    // window.open('main_page'); 
+                    
+                    // refresh the settings
+                    double_click = false;
+                    final_transcript=''
+                    document.getElementById('instruction').innerHTML = "Click icon and begin speaking."
+                    document.getElementById('final_span').innerHTML = ''
+                }
+
+                else{  //开始说话
+                    double_click = true;
+                    recognition.start();
+                    document.getElementById('instruction').innerHTML = 'Now you are speaking.'
+                    
+                }
+
+            recognition.onresult = function(event) { 
+                var interim_transcript = '';
+                for (var i = event.resultIndex; i < event.results.length; ++i) {
+                if (event.results[i].isFinal) {
+                    final_transcript += event.results[i][0].transcript;
+                } else {
+                    interim_transcript += event.results[i][0].transcript;
+                }
+                }
+                document.getElementById('final_span').innerHTML = final_transcript
+                }
+            })
+        }
+
+    </script>
+</body>
+
+</html>

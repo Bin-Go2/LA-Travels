@@ -1,0 +1,85 @@
+<html>
+<head>
+<link rel="stylesheet" href="{{ url_for('static', path='/css/codemirror.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/codemirror-neo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/cy2neo.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/neod3.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/datatable.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/vendor.css') }}"> <!-- bootstrap-->
+<link rel="stylesheet" href="{{ url_for('static', path='/css/sweet-alert.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='/css/gh-fork-ribbon.css') }}">
+
+<title>Neo4j Cypher Workbench</title>
+</head>
+<body>
+
+  </br>
+  <a href="{{ request.url_for('search_page') }}" title="Back" id="back"><i class="fa fa-backward fa-2x"></i></a>
+
+  <div>
+  <input class="form-control" type="url" value="http://localhost:7474" id="neo4jUrl"/><br/>
+  <input class="form-control" type="text" size="8" value="neo4j" id="neo4jUser"/>
+  <input class="form-control" type="password" size="8" placeholder="password" value="12345678" id="neo4jPass"/><br/>
+  <textarea name="cypher" id="cypher" rows="4" cols="120" data-lang="cypher" class="code form-control">
+  MATCH (n)-[r]->(m)
+  RETURN n,r,m
+  LIMIT 50;
+  </textarea>
+  
+  <a href="#" title="Execute" id="execute"><i class="fa fa-play-circle-o"></i></a>
+  </div>
+
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#graph" aria-controls="home" role="tab" data-toggle="tab">Graph</a></li>
+    <!-- <li role="presentation"><a href="#table" aria-controls="table" role="tab" data-toggle="tab">Table</a></li> -->
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="graph">
+    	<div class="tab-pane active" id="graph">&nbsp;</div>
+    </div>
+   <!--  <div role="tabpanel" class="tab-pane" id="table">
+    	<div id="datatable"></div>
+    </div> -->
+  </div>
+  
+
+
+</div>
+
+<script src="{{ url_for('static', path='/js/codemirror.js') }}"></script>
+<script src="{{ url_for('static', path='/js/codemirror-cypher.js') }}"></script>
+<script src="{{ url_for('static', path='/js/vendor.js') }}"></script>
+<script src="{{ url_for('static', path='/js/sweet-alert.min.js') }}"></script>
+<script src="{{ url_for('static', path='/js/neod3.js') }}"></script>
+<script src="{{ url_for('static', path='/js/neod3-visualization.js') }}"></script>
+<script src="{{ url_for('static', path='/js/neo4d3.js') }}"></script>
+<script src="{{ url_for('static', path='/js/cy2neod3.js') }}"></script>
+<script src="{{ url_for('static', path='/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', path='/js/cypher.datatable.js') }}"></script>
+
+<!-- <script
+  src="https://code.jquery.com/jquery-3.5.1.js"
+  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+  crossorigin="anonymous"></script> -->
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+		//todo dynamic configuration
+		var config = {}
+	    var connection = function() { return {url:$("#neo4jUrl").val(), user:$("#neo4jUser").val(),pass:$("#neo4jPass").val()}; }
+		  new Cy2NeoD3(config,"graph","datatable","cypher","execute", connection , true);
+
+      console.log(connection)
+	});
+</script>
+
+
+</body>
+</html>
