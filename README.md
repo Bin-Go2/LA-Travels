@@ -31,3 +31,5 @@
 ![image](https://github.com/Bin-Go2/LA-Travels/blob/master/image/DSCI558_pre-15.png)
 
 ![image](https://github.com/Bin-Go2/LA-Travels/blob/master/image/DSCI558_pre-16.png)
+
+Demo Vedio is shown here: https://www.youtube.com/watch?v=1DZRQc8pd0w
