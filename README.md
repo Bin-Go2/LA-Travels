@@ -1,1 +1,1 @@
-<<center><embed src="LA-Travels/presentation/DSCI558_pre.pdf" width="850" height="600"></center>
+![image](https://github.com/Bin-Go2/LA-Travels/blob/master/image/DSCI558_pre-01.png)
