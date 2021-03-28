@@ -1,0 +1,129 @@
+@prefix my_ns: <http://dsci558.org/myfakenamespace#> .
+@prefix neo4voc: <http://neo4j.org/vocab/sw#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+my_ns:amentity_name a rdf:Property ;
+    neo4voc:name "amentity_name" ;
+    rdfs:domain my_ns:amentity ;
+    rdfs:range schema:text .
+
+my_ns:feature_name a rdf:Property ;
+    neo4voc:name "feature_name" ;
+    rdfs:domain my_ns:feature ;
+    rdfs:range schema:text .
+
+my_ns:hotel_amentity a rdf:Property ;
+    neo4voc:name "hotel_amentity" ;
+    rdfs:domain my_ns:hotel ;
+    rdfs:range my_ns:amentity .
+
+my_ns:hotel_feature a rdf:Property ;
+    neo4voc:name "hotel_feature" ;
+    rdfs:domain my_ns:hotel ;
+    rdfs:range my_ns:feature .
+
+my_ns:location a rdf:Property ;
+    neo4voc:name "location" ;
+    rdfs:domain my_ns:place ;
+    rdfs:range schema:text .
+
+my_ns:name a rdf:Property ;
+    neo4voc:name "name" ;
+    rdfs:domain my_ns:place ;
+    rdfs:range schema:text .
+
+my_ns:near a rdf:Property ;
+    neo4voc:name "nearby" ;
+    rdfs:domain my_ns:place ;
+    rdfs:range my_ns:place .
+
+my_ns:price a rdf:Property ;
+    neo4voc:name "price" ;
+    rdfs:domain my_ns:place ;
+    rdfs:range schema:text .
+
+my_ns:rating a rdf:Property ;
+    neo4voc:name "star" ;
+    rdfs:domain my_ns:place ;
+    rdfs:range xsd:float .
+
+my_ns:room_type a rdf:Property ;
+    neo4voc:name "room_type" ;
+    rdfs:domain my_ns:hotel ;
+    rdfs:range my_ns:type .
+
+my_ns:type_name a rdf:Property ;
+    neo4voc:name "type_name" ;
+    rdfs:domain my_ns:type ;
+    rdfs:range schema:text .
+
+schema:attrcation neo4voc:name "schema:attrcation" .
+
+schema:amentity neo4voc:name "schema:amentity" .
+
+schema:feature neo4voc:name "schema:feature" .
+
+schema:place neo4voc:name "schema:place" .
+
+schema:type neo4voc:name "schema:type" .
+
+my_ns:attrcation a schema:Class ;
+    my_ns:attrac_name schema:text ;
+    my_ns:near my_ns:hotel,
+        my_ns:restaurant ;
+    neo4voc:name "Attraction" ;
+    rdfs:subClassOf my_ns:place .
+
+my_ns:restaurant a schema:Class ;
+    my_ns:location schema:text ;
+    my_ns:name schema:text ;
+    my_ns:near my_ns:attrcation,
+        my_ns:hotel ;
+    my_ns:price schema:text ;
+    my_ns:rating xsd:float ;
+    neo4voc:name "Restaurant" ;
+    rdfs:subClassOf my_ns:place ;
+    schema:latitude xsd:float ;
+    schema:longitude xsd:float .
+
+my_ns:amentity a schema:Class ;
+    my_ns:amentity_name schema:text ;
+    neo4voc:name "amentity" ;
+    rdfs:subClassOf schema:amentity .
+
+my_ns:feature a schema:Class ;
+    my_ns:feature_name schema:text ;
+    neo4voc:name "room feature" ;
+    rdfs:subClassOf schema:feature .
+
+my_ns:type a schema:Class ;
+    my_ns:type_name schema:text ;
+    neo4voc:name "room type" ;
+    rdfs:subClassOf schema:type .
+
+my_ns:hotel a schema:Class ;
+    my_ns:hotel_amentity my_ns:amentity ;
+    my_ns:hotel_feature my_ns:feature ;
+    my_ns:location schema:text ;
+    my_ns:name schema:text ;
+    my_ns:near my_ns:attrcation,
+        my_ns:restaurant ;
+    my_ns:price schema:text ;
+    my_ns:rating xsd:float ;
+    my_ns:room_type my_ns:type ;
+    neo4voc:name "Hotel" ;
+    rdfs:subClassOf my_ns:place ;
+    schema:latitude xsd:float ;
+    schema:longitude xsd:float .
+
+xsd:float neo4voc:name "xsd:float" .
+
+my_ns:place a schema:Class ;
+    neo4voc:name "Place" ;
+    rdfs:subClassOf schema:place .
+
+schema:text neo4voc:name "schema:text" .
+
